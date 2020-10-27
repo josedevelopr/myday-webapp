@@ -7,6 +7,7 @@ const flash = require('connect-flash')
 const passport = require('passport')
 const bodyParser = require('body-parser')
 require('./config/database')
+require('./config/passport')
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.engine('.hbs', exhbs({
     extname : '.hbs'
 }));
 app.set('view engine', '.hbs');
+
 // MIDDLEWARE
 app.set(express.urlencoded({extended:false}))
 app.use(methodOverride('_method'))
@@ -34,8 +36,18 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(flash());
 
+app.use((req, res, next) => {
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    res.locals.error = req.flash('error');
+    res.locals.user = req.user || null;
+    next();
+});
+
 app.use(require('./routes/index'))
+app.use(require('./routes/user'))
 app.use(express.static(path.join(__dirname, 'public')))
+
 app.listen(app.get('port'), () => {
     console.log('SERVER ON PORT', app.get('port'))
 });

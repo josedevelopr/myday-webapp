@@ -4,12 +4,24 @@ body{
     background: linear-gradient(to right, #4A00E0, #8E2DE2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
+/*INDEX VIEW*/
 .navbar-nav li a{
     color: #fff !important;
 }
 
 .title h1{
     font-size: 5rem;
+}
+
+.landing-icon{
+    cursor: pointer;
+}
+
+.landing-icon:hover{
+    cursor: pointer;
+    -webkit-box-shadow: 1px 7px 20px -3px rgba(0,0,0,0.75);
+    -moz-box-shadow: 1px 7px 20px -3px rgba(0,0,0,0.75);
+    box-shadow: 1px 7px 20px -3px rgba(0,0,0,0.75);
 }
 
 .landing-text P{
