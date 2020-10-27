@@ -46,6 +46,8 @@ app.use((req, res, next) => {
 
 app.use(require('./routes/index'))
 app.use(require('./routes/user'))
+app.use(require('./routes/routine'))
+
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.listen(app.get('port'), () => {

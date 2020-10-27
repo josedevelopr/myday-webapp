@@ -9,7 +9,7 @@ router.get('/users/signin', (req, res) => {
 });
 
 router.post('/users/signin', passport.authenticate('local', {    
-    successRedirect: '/notes', //indicando a donde se redireccionara luego del success
+    successRedirect: '/routines', //indicando a donde se redireccionara luego del success
     failureRedirect: '/users/signin',//indicando a donde se redireccionara luego del failure
     failureFlash : true
 }));
@@ -68,15 +68,34 @@ router.post('/users/signup', async (req, res) => {
 
             newUser.password = await newUser.encryptPassord(password);
             const successRegister = await newUser.save();
-            console.log(successRegister);
-            req.flash('success_msg','You are registered!');
+            // console.log(successRegister);
+            req.flash('success_msg','You are now registered! Please log in :D');
             res.redirect('/');
         }        
     }
 });
 
-router.get('/users/complete-register', (req, res) => {
+router.get('/users/complete-register', (req, res) => {    
     res.render('users/completeRegister');
+});
+
+router.post('/users/complete-register', async (req, res) => {    
+    const {firstName, lastName, birthday, sex} = req.body;
+    // console.log(req.body);
+    await User.findByIdAndUpdate(req.user._id, {
+                                                    firstName : firstName,
+                                                    lastName : lastName,
+                                                    birthday : birthday,
+                                                    sex : sex,
+                                                    registerCompleted : true
+                                                });
+    req.flash('success_msg', 'Your user information is now completed! :D');
+    res.redirect('/routines');
+});
+
+router.get('/users/logout',(req, res) => {
+    req.logOut();
+    res.redirect('/');
 });
 
 module.exports = router;

@@ -12,20 +12,32 @@
                         <input type="text" class="form-control" name="lastName" id="lastName" value={{lastName}}>
                     </div>
                     <div class="form-group">
-                        <label for="birthday">Birthday</label>
-                        <input type="text" class="form-control" name="birthday" id="birthday" value={{birthday}}>
+                        <label for="birthday">Birthday</label>                        
+                        
+                        <div class="input-group date" data-date-format="mm-dd-yyyy">                            
+                            <input class="form-control datepicker-birthday" type="text" readonly name="birthday" id="birthday" value={{birthday}}/>                            
+                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                    <i class="far fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="sex">Sex</label>
-                        <select name="sex" id="sex">
+                        <select name="sex" id="sex" class="form-control">
                             <option value="male">Male</option>
                             <option value="female">Female</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <input type="submit" class="btn btn-block btn-primary" value="Sign in">
-                    </div>
-                </form>                
+                        <input type="submit" class="btn btn-block btn-primary" value="Save">                        
+                    </div>       
+                                 
+                </form>   
+                <div class="form-group">
+                    <a href="/routines" class="btn btn-block btn-secondary">Skip</a>
+                </div>             
             </div>
         </div>
     </div>    
