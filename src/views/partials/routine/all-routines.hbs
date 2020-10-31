@@ -1,0 +1,32 @@
+<div class="col-md-6">
+    <div class="row  d-flex">
+        <div class="col-md-9">
+            <table class="table text-light">
+                <thead>
+                    <tr>
+                        <th scope="col">Day</th>
+                        <th scope="col"></th>      
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each routineDays}}
+                        <tr >
+                            <th scope="row">{{name}}</th>
+                            <td>                                
+                                <div class="dropdown mr-1">
+                                    <button type="button" class="btn dropdown-toggle actions-elipsis-dropdown" id="dropdownMenuOffset" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="10,20">
+                                        <i class="fas fa-ellipsis-h text-light"></i>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
+                                        <a class="dropdown-item" href="/routines/check-routine/{{numberDay}}">Check</a>
+                                        <a class="dropdown-item" href="/routines/edit-routine/{{numberDay}}">Edit</a>                                    
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>    
+</div>

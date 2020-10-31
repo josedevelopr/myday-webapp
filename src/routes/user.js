@@ -1,15 +1,18 @@
 const express = require('express')
 const router = express.Router()
+const moment = require('moment');
+const passport = require('passport')
 
 const User = require('../models/User')
-const passport = require('passport')
+const Routine = require('../models/Routine');
+const weekRoutineDays = require('../helpers/days');
 
 router.get('/users/signin', (req, res) => {    
     res.render('users/signin');
 });
 
 router.post('/users/signin', passport.authenticate('local', {    
-    successRedirect: '/routines', //indicando a donde se redireccionara luego del success
+    successRedirect: '/main', //indicando a donde se redireccionara luego del success
     failureRedirect: '/users/signin',//indicando a donde se redireccionara luego del failure
     failureFlash : true
 }));
@@ -67,8 +70,27 @@ router.post('/users/signup', async (req, res) => {
                                     });
 
             newUser.password = await newUser.encryptPassord(password);
+            
+            // Filling in routine weekDays
+            let newWeekDays = [];
+            weekRoutineDays.map( day => {
+                newWeekDays.push({
+                    dayNumber : day.numberDay,
+                    name : day.name,
+                    lastDateChange : moment().format(),
+                    activities : []
+                })
+            });
+
+            const newRoutine = Routine({
+                                        user : newUser._id,
+                                        weekDays : newWeekDays
+                                    });
+            // console.log(newRoutine);
+
             const successRegister = await newUser.save();
-            // console.log(successRegister);
+            const succesRoutinRegister = await newRoutine.save();
+            // console.log("REGISTER :", successRegister, succesRoutinRegister);
             req.flash('success_msg','You are now registered! Please log in :D');
             res.redirect('/');
         }        
@@ -90,7 +112,7 @@ router.post('/users/complete-register', async (req, res) => {
                                                     registerCompleted : true
                                                 });
     req.flash('success_msg', 'Your user information is now completed! :D');
-    res.redirect('/routines');
+    res.redirect('/main');
 });
 
 router.get('/users/logout',(req, res) => {

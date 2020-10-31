@@ -18,7 +18,11 @@ app.set('views', path.join(__dirname, 'views'))
 app.engine('.hbs', exhbs({
     defaultLayout : 'main',
     layoutsDir : path.join(app.get('views'), 'layouts'),
-    partialsDir : path.join(app.get('views'), 'partials'),
+    partialsDir : [ 
+                    path.join(app.get('views'), 'partials'),
+                    path.join(app.get('views'), 'partials/routine'),
+                    path.join(app.get('views'), 'partials/note'),
+                ],
     extname : '.hbs'
 }));
 app.set('view engine', '.hbs');
@@ -47,6 +51,8 @@ app.use((req, res, next) => {
 app.use(require('./routes/index'))
 app.use(require('./routes/user'))
 app.use(require('./routes/routine'))
+app.use(require('./routes/activity'))
+app.use(require('./routes/main'))
 
 app.use(express.static(path.join(__dirname, 'public')))
 

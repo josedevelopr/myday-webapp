@@ -34,3 +34,33 @@ body{
     background-color: #fff;
     border-radius: 10px;
 }
+
+.notes-container{
+    height: 70vh;
+}
+    .notes-container::-webkit-scrollbar {
+        width: 8px;
+    }
+    .notes-container::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey; 
+        border-radius: 10px;
+    }
+       
+      /* Handle */
+    .notes-container::-webkit-scrollbar-thumb {
+        background: #fff; 
+        border-radius: 10px;
+    }
+      
+      /* Handle on hover */
+    .notes-container::-webkit-scrollbar-thumb:hover {
+        background: rgb(133, 133, 133);         
+    }
+
+.check-btn{
+    cursor: pointer;
+}
+
+.actions-elipsis-dropdown::after {
+    display: none;
+}

@@ -1,0 +1,38 @@
+<div class="container">    
+    <div class="row">
+        <div class="col-12 text-center">
+            <h4 class="text-light">New Activity</h4>            
+        </div>        
+    </div>   
+    <div class="row d-flex justify-content-center pt-3">
+        <div class="col-md-6 shadow-lg p-3 mb-5 bg-white rounded">
+            <div class="form">
+                <form action="/activity/new-activity" method="POST">
+                    <input type="hidden" value="{{id}}" name="dayId">
+                    <div class="form-group">
+                        <label for="startTime">Start Time</label>      
+                        <input type="time" class="form-control" name="startTime" id="startTime" value="{{startTime}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="endTime">End Time</label>      
+                        <input type="time" class="form-control" name="endTime" id="endTime" value="{{endTime}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>      
+                        <textarea class="form-control" name="description" id="description" cols="30" rows="3">{{description}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="tag">Tags</label>      
+                        <input type="text" class="form-control" name="tag" id="tag" value="{{tag}}">
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-block btn-primary" value="Save">
+                    </div>
+                </form>   
+                <div class="form-group">
+                        <a href="/routines/edit-routine/{{id}}" class="btn btn-secondary btn-block">Cancel</a>
+                </div>             
+            </div>
+        </div>
+    </div>  
+</div>

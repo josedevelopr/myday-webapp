@@ -7,7 +7,7 @@ passport.use(new LocalStrategy({
     usernameField : 'user',//indicando con que se hara la autenticación
     passwordField : 'password'
 }, async (user, password, done) =>{  
-    console.log(user, password);
+    // console.log(user, password);
     const userToLogin = await User.findOne({user : user});
     
     if(!userToLogin){

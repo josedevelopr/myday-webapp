@@ -1,0 +1,51 @@
+<div class="container">    
+    <div class="row">
+        <div class="col-12  d-flex justify-content-between">
+            <h4 class="text-light">This is your routine for {{routine.name}}</h4>
+            <a href="/activity/new-activity/{{routine.dayNumber}}" type="button" class="btn">
+                <i class="fas fa-plus text-light"></i>
+            </a>
+        </div>        
+    </div>   
+    <div class="row d-flex pt-3">
+        <div class="col-md-12">
+            <table class="table text-light">
+                <thead>
+                    <tr>
+                        <th scope="col">Time</th>
+                        <th scope="col">Description</th>      
+                        <th scope="col">State</th>      
+                        <th scope="col"></th>      
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each routine.activities}}
+                        <tr >
+                            <td scope="row">{{startTime}} - {{finishTime}}</td>                            
+                            <td>                                
+                                {{description}}
+                            </td>
+                            <td>{{state}}</td>
+                            <td>                                
+                                <div class="dropdown mr-1">
+                                    <button type="button" class="btn dropdown-toggle actions-elipsis-dropdown" id="dropdownMenuOffset" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="10,20">
+                                        <i class="fas fa-ellipsis-h text-light"></i>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
+                                        <a class="dropdown-item" href="/activity/mark-as-done/{{activitiyNumber}}">Mark as done</a>
+                                        <a class="dropdown-item" href="/activity/edit/{{activitiyNumber}}">Edit</a>
+                                        <form action="/activity/delete/{{activitiyNumber}}?_method=DELETE" method="POST">
+                                            <input type="hidden" name="_me">
+                                            <input type="hidden" name="dayNumber" value="{{../routine.dayNumber}}">
+                                            <input type="submit" value="Delete"  class="dropdown-item">
+                                        </form>                                                                            
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div> 
+</div>
