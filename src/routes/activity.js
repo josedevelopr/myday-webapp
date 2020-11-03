@@ -12,6 +12,117 @@ router.get('/activity/new-activity/:id', isAuthenticated, (req, res) => {
     res.render('activity/new-activity', {id : id});
 });
 
+router.get('/activity/edit-activity/:dayNumber/:activityNum',  isAuthenticated, async (req, res) => {            
+    let {dayNumber, activityNum} = req.params;    
+    // console.log(activityNum, dayNumber);
+    let activity = await Routine.findOne({"user" : req.user._id.toString()})
+    .then( data => {
+            let activityToReturn;
+            // console.log(data.weekDays)
+            data.weekDays.map( day => {
+                if(day.dayNumber === parseInt(dayNumber))
+                {
+                    activityToReturn = day.activities.filter( d => { if(parseInt(activityNum) == d.activitiyNumber) { return d; } });
+                }
+                //return day;
+            })
+            return activityToReturn[0];
+        }
+        ).catch(err => console.error(err));
+        
+    // console.log(activity);
+    res.render('activity/edit-activity', {id : dayNumber, activity : activity});
+});
+
+router.get('/activity/mark-as-done/:dayNumber/:activityNum', isAuthenticated, async (req, res) => {            
+    let id = req.params.id;
+    let {dayNumber, activityNum} = req.params; 
+    let routineToUpdate = await Routine.findOne({"user" : req.user._id.toString()})
+    .then( data => {
+            data.weekDays.map( day => {
+                if(day.dayNumber === parseInt(dayNumber))
+                {
+                    day.activities = day.activities.map( d => { if(parseInt(activityNum) == d.activitiyNumber) {   d.state = !d.state; } return d;});
+                }
+                return day;
+            })
+            return data;
+        }
+        ).catch(err => console.error(err));
+    
+    await Routine.findOneAndUpdate({"user" : routineToUpdate.user}, routineToUpdate);    
+
+    // console.log(routineToUpdate);
+    // console.log(routineToUpdate.weekDays[parseInt(dayNumber-1)]);
+    req.flash('success_msg', "Your activity was marked as done successfully! :D")
+    res.redirect(`/routines/check-routine/${dayNumber}`);
+});
+
+router.put('/activity/edit-activity/:dayNumber/:activityNum',  isAuthenticated, async (req, res) => {            
+    let {dayNumber, activityNum} = req.params; 
+    const {dayId, startTime, endTime, description, tag} = req.body;    
+
+    let errors = [];
+
+    if(startTime.length == 0){
+        errors.push({text:'Please insert the Start Time'});
+    }
+    
+    if(endTime.length == 0){
+        errors.push({text:'Please insert the End Time'});
+    }
+
+    if(description.length == 0){
+        errors.push({text:'Please insert the description of your new routine detail'});
+    }
+
+    if(startTime >= endTime)
+    {
+        errors.push({text : 'Please the Start Time cannot be higher than the endTime'});
+    }
+
+    if(errors.length > 0)
+    {
+        res.render('activity/new-activity', {errors, id : dayId, startTime, endTime, description, tag});
+    } else
+    {
+        const routineToUpdate = await Routine.findOne({"user" : req.user._id.toString()})
+        .then( data => {
+                data.weekDays.map( day => {
+                    if(day.dayNumber === parseInt(dayNumber))
+                    {
+                        day.activities = day.activities.
+                                                map( d => 
+                                                { 
+                                                    if(parseInt(activityNum) == d.activitiyNumber) 
+                                                    {   d = 
+                                                        {
+                                                            activitiyNumber : parseInt(activityNum),
+                                                            description : description,
+                                                            startTime : startTime,
+                                                            finishTime : endTime,                                                    
+                                                            state : d.state,
+                                                            tag : tag
+                                                        } 
+                                                    } 
+                                                    return d;
+                                                });
+                    }
+                    return day;
+                })
+                return data;
+            }
+            ).catch(err => console.error(err));
+        
+        await Routine.findOneAndUpdate({"user" : routineToUpdate.user}, routineToUpdate);    
+
+        // console.log(routineToUpdate);
+        // console.log(routineToUpdate.weekDays[parseInt(dayNumber-1)]);
+        req.flash('success_msg', "Your activity was updated successfully! :D")
+        res.redirect(`/routines/check-routine/${dayNumber}`);
+    }    
+});
+
 router.post('/activity/new-activity', isAuthenticated, async (req, res) => {        
     const errors = [];
     const {dayId, startTime, endTime, description, tag} = req.body;    
@@ -85,7 +196,7 @@ router.post('/activity/new-activity', isAuthenticated, async (req, res) => {
                                     startTime : startTime,
                                     finishTime : endTime,
                                     description : description,
-                                    state : 1,
+                                    state : false,
                                     tag : tag,                                    
                                 }
                             )
@@ -105,7 +216,7 @@ router.post('/activity/new-activity', isAuthenticated, async (req, res) => {
             await Routine.findOneAndUpdate({"user" : routineToUpdate.user}, routineToUpdate);    
             
             req.flash('success_msg', "Your activity was saved successfully! :D")
-            res.redirect(`/routines/edit-routine/${dayId}`);
+            res.redirect(`/routines/check-routine/${dayId}`);
         }
     }
 });
@@ -134,7 +245,7 @@ router.delete('/activity/delete/:activityNum', isAuthenticated, async (req, res)
 
     // console.log(routineToUpdate.weekDays[parseInt(dayNumber)]);
     req.flash('success_msg', "Your activity was deleted successfully! :D")
-    res.redirect(`/routines/edit-routine/${dayNumber}`);
+    res.redirect(`/routines/check-routine/${dayNumber}`);
 });
 
 module.exports = router;

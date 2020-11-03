@@ -25,15 +25,22 @@
                             <td>                                
                                 {{description}}
                             </td>
-                            <td>{{state}}</td>
+                            <td>{{stateDescription}}</td>
                             <td>                                
                                 <div class="dropdown mr-1">
                                     <button type="button" class="btn dropdown-toggle actions-elipsis-dropdown" id="dropdownMenuOffset" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="10,20">
                                         <i class="fas fa-ellipsis-h text-light"></i>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
-                                        <a class="dropdown-item" href="/activity/mark-as-done/{{activitiyNumber}}">Mark as done</a>
-                                        <a class="dropdown-item" href="/activity/edit/{{activitiyNumber}}">Edit</a>
+                                        <a class="dropdown-item" href="/activity/mark-as-done/{{../routine.dayNumber}}/{{activitiyNumber}}"> Mark as
+                                            {{#if state}}
+                                                undone
+                                            {{else}}
+                                                done
+                                            {{/if}}
+                                        
+                                        </a>                                    
+                                        <a class="dropdown-item" href="/activity/edit-activity/{{../routine.dayNumber}}/{{activitiyNumber}}">Edit</a>
                                         <form action="/activity/delete/{{activitiyNumber}}?_method=DELETE" method="POST">
                                             <input type="hidden" name="_me">
                                             <input type="hidden" name="dayNumber" value="{{../routine.dayNumber}}">

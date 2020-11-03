@@ -1,29 +1,30 @@
 <div class="container">    
     <div class="row">
         <div class="col-12 text-center">
-            <h4 class="text-light">New Activity</h4>            
+            <h4 class="text-light">Edit Activity</h4>            
         </div>        
     </div>   
     <div class="row d-flex justify-content-center pt-3">
         <div class="col-md-6 shadow-lg p-3 mb-5 bg-white rounded">
             <div class="form">
-                <form action="/activity/new-activity" method="POST">
+                <form action="/activity/edit-activity/{{id}}/{{activity.activitiyNumber}}?_method=PUT" method="POST">
+                    <input type="hidden" name="_me">
                     <input type="hidden" value="{{id}}" name="dayId">
                     <div class="form-group">
                         <label for="startTime">Start Time</label>      
-                        <input type="time" class="form-control" name="startTime" id="startTime" value="{{startTime}}">
+                        <input type="time" class="form-control" name="startTime" id="startTime" value="{{activity.startTime}}">
                     </div>
                     <div class="form-group">
                         <label for="endTime">End Time</label>      
-                        <input type="time" class="form-control" name="endTime" id="endTime" value="{{endTime}}">
+                        <input type="time" class="form-control" name="endTime" id="endTime" value="{{activity.finishTime}}">
                     </div>
                     <div class="form-group">
                         <label for="description">Description</label>      
-                        <textarea class="form-control" name="description" id="description" cols="30" rows="3">{{description}}</textarea>
+                        <textarea class="form-control" name="description" id="description" cols="30" rows="3">{{activity.description}}</textarea>
                     </div>
                     <div class="form-group">
                         <label for="tag">Tags</label>      
-                        <input type="text" class="form-control" name="tag" id="tag" value="{{tag}}">
+                        <input type="text" class="form-control" name="tag" id="tag" value="{{activity.tag}}">
                     </div>
                     <div class="form-group">
                         <input type="submit" class="btn btn-block btn-primary" value="Save">

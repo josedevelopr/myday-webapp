@@ -11,7 +11,7 @@ router.get('/routines', isAuthenticated, (req, res) => {
     res.render('routines/all-routines', {routineDays : weekRoutineDays});
 });
 
-router.get('/routines/edit-routine/:id', isAuthenticated, async (req, res) => {            
+router.get('/routines/check-routine/:id', isAuthenticated, async (req, res) => {            
 
     let routineDay = await Routine.findOne({
                                         "user" : req.user._id.toString()        
@@ -20,6 +20,13 @@ router.get('/routines/edit-routine/:id', isAuthenticated, async (req, res) => {
                                         data.weekDays.map( day => {
                                             if(day.dayNumber === parseInt(req.params.id))
                                             {
+                                                day.activities = day.activities.
+                                                map( d => 
+                                                { 
+                                                    d["stateDescription"] = d.state ? "Done" : "To do" ;
+                                                    return d;
+                                                });
+
                                                 result = day;
                                             }
                                         });
@@ -32,7 +39,7 @@ router.get('/routines/edit-routine/:id', isAuthenticated, async (req, res) => {
     }                                        
     //console.log(routineDay);
 
-    res.render('routines/edit-routine', {
+    res.render('routines/check-routine', {
                                             routine : routineDay,
                                             dayNumber : routineDay.dayNumber,
                                         });
